@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import SceneContainer from "./SceneContainer";
 
-const Description2 = () => {
-  const [height, setHeigth] = useState(0);
-  console.log(height, "2");
+interface DescriptionProps {
+  clientHeight: number[];
+  setClientHeight: React.Dispatch<SetStateAction<number[]>>;
+}
+
+const Description2 = ({ clientHeight, setClientHeight }: DescriptionProps) => {
+  const [curentHeight, setCurEentHeigth] = useState(0);
+
+  useEffect(() => {
+    setClientHeight((pre: number[]) => {
+      const newArr = [...pre];
+      newArr[1] = curentHeight;
+      return newArr;
+    });
+  }, [curentHeight]);
   return (
-    <SceneContainer heightNum={1} currentHeight={(height) => setHeigth(height)}>
+    <SceneContainer heightNum={1} currentHeight={(height) => setCurEentHeigth(height)}>
       <p className="max-w-[1024px] mx-auto text-[1.2rem] text-center text-[#888]">
         <strong className="text-[3rem] float-left mx-[0.2em]">더 많은 즐거움</strong>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam vero possimus nam quod similique distinctio

@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { SetStateAction, useContext, useEffect, useState } from "react";
+
 import SceneContainer from "./SceneContainer";
 
-const Description1 = () => {
-  const [height, setHeigth] = useState(0);
+interface DescriptionProps {
+  clientHeight: number[];
+  setClientHeight: React.Dispatch<SetStateAction<number[]>>;
+}
 
-  console.log(height, "1");
+const Description1 = ({ clientHeight, setClientHeight }: DescriptionProps) => {
+  const [curentHeight, setCurEentHeigth] = useState(0);
 
+  useEffect(() => {
+    setClientHeight((pre: number[]) => {
+      const newArr = [...pre];
+      newArr[0] = curentHeight;
+      return newArr;
+    });
+  }, [curentHeight]);
   return (
-    <SceneContainer heightNum={5} currentHeight={(height) => setHeigth(height)}>
+    <SceneContainer heightNum={5} currentHeight={(height) => setCurEentHeigth(height)}>
       <h1 className="relative text-[4rem] -top-[10vh]  lg:text-[9vw] font-medium flex items-center justify-center">
         IPhone 13 Pro
       </h1>

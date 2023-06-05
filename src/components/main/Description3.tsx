@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import SceneContainer from "./SceneContainer";
+interface DescriptionProps {
+  clientHeight: number[];
+  setClientHeight: React.Dispatch<SetStateAction<number[]>>;
+}
+const Description3 = ({ clientHeight, setClientHeight }: DescriptionProps) => {
+  const [curentHeight, setCurEentHeigth] = useState(0);
 
-const Description3 = () => {
-  const [height, setHeigth] = useState(0);
-console.log(height, "3");
+  useEffect(() => {
+    setClientHeight((pre: number[]) => {
+      const newArr = [...pre];
+      newArr[2] = curentHeight;
+      return newArr;
+    });
+  }, [curentHeight]);
   return (
-    <SceneContainer heightNum={5} currentHeight={(height) => setHeigth(height)}>
+    <SceneContainer heightNum={5} currentHeight={(height) => setCurEentHeigth(height)}>
       <div className=" top-[10vh] w-full sticky-elem">
         <p className=" text-[3.5rem] text-center top-[45vh]">
           <small className="block text-[1.2rem]">빛이 부족할 때도,</small>

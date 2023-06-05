@@ -1,16 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import SceneContainer from "./SceneContainer";
 
-const Description4 = () => {
-  const [height, setHeigth] = useState(0);
-  console.log(height, "4");
+interface DescriptionProps {
+  clientHeight: number[];
+  setClientHeight: React.Dispatch<SetStateAction<number[]>>;
+}
+const Description4 = ({ clientHeight, setClientHeight }: DescriptionProps) => {
+  const [curentHeight, setCurEentHeigth] = useState(0);
+
+  useEffect(() => {
+    setClientHeight((pre: number[]) => {
+      const newArr = [...pre];
+      newArr[3] = curentHeight;
+      return newArr;
+    });
+  }, [curentHeight]);
   return (
     <SceneContainer
       heightNum={5}
       display="flex"
       flexDirection="column"
       alignItems="center"
-      currentHeight={(height) => setHeigth(height)}
+      currentHeight={(height) => setCurEentHeigth(height)}
     >
       <p className="max-w-[1024px] text-[2rem] text-gray-400 mx-auto">
         <strong className="text-black">A16 Bionic 칩</strong>
