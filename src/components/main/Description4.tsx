@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import SceneContainer from "./SceneContainer";
 
 const Description4 = () => {
+  const [height, setHeigth] = useState(0);
+  console.log(height, "4");
   return (
-    <section className="m-auto h-[4000px] flex flex-col items-center">
-      <p className="max-w-[1024px] mx-auto text-[2rem] text-gray-400">
+    <SceneContainer
+      heightNum={5}
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      currentHeight={(height) => setHeigth(height)}
+    >
+      <p className="max-w-[1024px] text-[2rem] text-gray-400 mx-auto">
         <strong className="text-black">A16 Bionic 칩</strong>
         <br />
         사진속 모든 것이 가장 아름답게
@@ -19,7 +28,7 @@ const Description4 = () => {
         repellendus perspiciatis cum ex similique accusantium! Sequi quia animi, culpa corporis magni rerum consectetur
         tempora aperiam repellat pariatur commodi facere, consequatur quae minima magnam fugit.
       </p>
-    </section>
+    </SceneContainer>
   );
 };
 

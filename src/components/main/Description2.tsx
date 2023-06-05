@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import SceneContainer from "./SceneContainer";
 
 const Description2 = () => {
+  const [height, setHeigth] = useState(0);
+  console.log(height, "2");
   return (
-    <section className="w-full">
+    <SceneContainer heightNum={1} currentHeight={(height) => setHeigth(height)}>
       <p className="max-w-[1024px] mx-auto text-[1.2rem] text-center text-[#888]">
         <strong className="text-[3rem] float-left mx-[0.2em]">더 많은 즐거움</strong>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam vero possimus nam quod similique distinctio
@@ -20,7 +23,7 @@ const Description2 = () => {
         iure! Commodi modi numquam id officia, dolorum quam! Molestiae odit ullam dolores quod voluptates consectetur
         quae eius similique officiis rem neque, earum error repudiandae fuga dolor in sequi!
       </p>
-    </section>
+    </SceneContainer>
   );
 };
 
