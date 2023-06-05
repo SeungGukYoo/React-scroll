@@ -2,8 +2,8 @@ import React from "react";
 
 const Description2 = () => {
   return (
-    <section className="max-w-[1024px] w-full">
-      <p className="text-[1.2rem] text-center text-[#888]">
+    <section className="w-full">
+      <p className="max-w-[1024px] mx-auto text-[1.2rem] text-center text-[#888]">
         <strong className="text-[3rem] float-left mx-[0.2em]">더 많은 즐거움</strong>
         Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ullam vero possimus nam quod similique distinctio
         dicta vel libero eius quae soluta molestiae saepe, perferendis corrupti hic unde labore! Quidem minus quo sequi
