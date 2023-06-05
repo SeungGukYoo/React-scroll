@@ -1,11 +1,7 @@
 import React from "react";
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const Layout = ({ children }: Props) => {
-  return <div className="w-full font-NotoSansKR">{children}</div>;
+const Layout = () => {
+  return <div></div>;
 };
 
 export default Layout;
