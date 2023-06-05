@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer {
+  .navText {
+    @apply text-14 font-NotoSansKR;
+  }
+}
+
+html {
+  font-size: 14px;
+}
+
+body {
+  letter-spacing: -0.04em;
+}
