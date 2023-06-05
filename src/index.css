@@ -6,6 +6,12 @@
   .navText {
     @apply text-14 font-NotoSansKR;
   }
+  .sticky-elem {
+    @apply opacity-0 fixed left-0 w-full;
+  }
+  .main-message {
+    @apply top-[35vh] h-[3em] text-[2.2rem] flex justify-center items-center;
+  }
 }
 
 html {
@@ -15,4 +21,8 @@ html {
 
 body {
   letter-spacing: -0.04em;
+}
+
+section {
+  border: 3px solid red;
 }
