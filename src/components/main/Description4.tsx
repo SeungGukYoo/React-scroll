@@ -7,7 +7,6 @@ interface DescriptionProps {
 }
 const Description4 = ({ clientHeight, setClientHeight }: DescriptionProps) => {
   const [curentHeight, setCurEentHeigth] = useState(0);
-
   useEffect(() => {
     setClientHeight((pre: number[]) => {
       const newArr = [...pre];
@@ -43,4 +42,4 @@ const Description4 = ({ clientHeight, setClientHeight }: DescriptionProps) => {
   );
 };
 
-export default Description4;
+export default React.memo(Description4);

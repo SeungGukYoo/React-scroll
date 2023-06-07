@@ -39,4 +39,4 @@ const Description2 = ({ clientHeight, setClientHeight }: DescriptionProps) => {
   );
 };
 
-export default Description2;
+export default React.memo(Description2);
