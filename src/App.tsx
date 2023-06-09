@@ -16,29 +16,48 @@ function App() {
   let isScrolling = useRef(false);
 
   useEffect(() => {
+    client_scrollY.current = scrollY.current - preHeight;
+  }, [preHeight]);
+
+  useEffect(() => {
     // scroll event 최적화 안됨
+
     const scrollEvent = () => {
       scrollY.current = window.scrollY;
 
       if (scrollY.current > preHeight + clientHeight[sceneInfo] && !isScrolling.current) {
         isScrolling.current = true;
-        setPreHeight((pre) => (pre += clientHeight[sceneInfo]));
+        setPreHeight((pre) => {
+          return (pre += clientHeight[sceneInfo]);
+        });
         setSceneInfo((pre) => (pre += 1));
+
         setTimeout(() => {
           isScrolling.current = false;
         }, 200);
+        return;
       }
       if (scrollY.current < preHeight && !isScrolling.current) {
         isScrolling.current = true;
+        setPreHeight((pre) => {
+          return (pre -= clientHeight[sceneInfo - 1]);
+        });
         setSceneInfo((pre) => (pre -= 1));
-        setPreHeight((pre) => (pre -= clientHeight[sceneInfo - 1]));
         setTimeout(() => {
           isScrolling.current = false;
         }, 200);
+        return;
       }
-      client_scrollY.current = scrollY.current - preHeight;
 
-      setRatio((pre) => (scrollY.current - preHeight) / clientHeight[sceneInfo]);
+      setRatio((pre) => {
+        let result = (scrollY.current - preHeight) / clientHeight[sceneInfo];
+        if (result < 0) result = 0;
+        else if (result > 1) result = 1;
+        pre = result;
+        return pre;
+      });
+
+      client_scrollY.current = scrollY.current - preHeight;
     };
 
     window.addEventListener("scroll", scrollEvent);
@@ -51,10 +70,31 @@ function App() {
   return (
     <div>
       <Header />
-      <Description1 ratio={ratio} clientScrollY={client_scrollY.current} setClientHeight={setClientHeight} />
-      <Description2 clientHeight={clientHeight} setClientHeight={setClientHeight} />
-      <Description3 clientHeight={clientHeight} setClientHeight={setClientHeight} />
-      <Description4 clientHeight={clientHeight} setClientHeight={setClientHeight} />
+      <Description1
+        sceneInfo={sceneInfo}
+        ratio={ratio}
+        clientScrollY={client_scrollY.current}
+        setClientHeight={setClientHeight}
+      />
+      <Description2
+        sceneInfo={sceneInfo}
+        ratio={ratio}
+        clientScrollY={client_scrollY.current}
+        setClientHeight={setClientHeight}
+      />
+      <Description3
+        sceneInfo={sceneInfo}
+        ratio={ratio}
+        clientScrollY={client_scrollY.current}
+        setClientHeight={setClientHeight}
+      />
+
+      <Description4
+        sceneInfo={sceneInfo}
+        ratio={ratio}
+        clientScrollY={client_scrollY.current}
+        setClientHeight={setClientHeight}
+      />
       <Footer />
     </div>
   );

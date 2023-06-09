@@ -1,19 +1,9 @@
-import React, { SetStateAction, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
+import { DescriptionProps, EventInfo } from "../../../types/component";
+import ScrollEvent from "../../util/scrollUtil";
 import SceneContainer from "./SceneContainer";
 
-interface DescriptionProps {
-  clientScrollY: number;
-  setClientHeight: React.Dispatch<SetStateAction<number[]>>;
-  ratio: number;
-}
-type ScrollEventInfo = [number, number, { start: number; end: number }];
-type EventInfo = {
-  opacity_in: ScrollEventInfo;
-  opacity_out: ScrollEventInfo;
-  transform_in: ScrollEventInfo;
-  transform_out: ScrollEventInfo;
-};
 interface InfoType {
   message_A: EventInfo;
   message_B: EventInfo;
@@ -160,23 +150,9 @@ const eventInfo: InfoType = {
   },
 };
 
-const Description1 = ({ clientScrollY, setClientHeight, ratio }: DescriptionProps) => {
+const Description1 = ({ sceneInfo, clientScrollY, setClientHeight, ratio }: DescriptionProps) => {
   const [currentHeight, setCurEentHeigth] = useState(0);
 
-  // 외부 파일로 옮길 예정
-  const scrollEvent = (section_info: ScrollEventInfo) => {
-    const eventStart = section_info[2].start * currentHeight;
-    const eventEnd = section_info[2].end * currentHeight;
-
-    const eventHeight = eventEnd - eventStart;
-
-    let rv = 0;
-    if (clientScrollY >= eventStart && clientScrollY <= eventEnd) {
-      rv = ((clientScrollY - eventStart) / eventHeight) * (section_info[1] - section_info[0]) + section_info[0];
-    } else if (clientScrollY < eventStart) rv = section_info[0];
-    else if (clientScrollY > eventEnd) rv = section_info[1];
-    return rv;
-  };
   let message_A_opacity;
   let message_A_translate;
   let message_B_opacity;
@@ -185,33 +161,36 @@ const Description1 = ({ clientScrollY, setClientHeight, ratio }: DescriptionProp
   let message_C_translate;
   let message_D_opacity;
   let message_D_translate;
-  if (ratio <= 0.22) {
-    message_A_opacity = scrollEvent(eventInfo.message_A.opacity_in);
-    message_A_translate = scrollEvent(eventInfo.message_A.transform_in);
-  } else {
-    message_A_opacity = scrollEvent(eventInfo.message_A.opacity_out);
-    message_A_translate = scrollEvent(eventInfo.message_A.transform_out);
-  }
-  if (ratio <= 0.42) {
-    message_B_opacity = scrollEvent(eventInfo.message_B.opacity_in);
-    message_B_translate = scrollEvent(eventInfo.message_B.transform_in);
-  } else {
-    message_B_opacity = scrollEvent(eventInfo.message_B.opacity_out);
-    message_B_translate = scrollEvent(eventInfo.message_B.transform_in);
-  }
-  if (ratio <= 0.62) {
-    message_C_opacity = scrollEvent(eventInfo.message_C.opacity_in);
-    message_C_translate = scrollEvent(eventInfo.message_C.transform_in);
-  } else {
-    message_C_opacity = scrollEvent(eventInfo.message_C.opacity_out);
-    message_C_translate = scrollEvent(eventInfo.message_C.transform_out);
-  }
-  if (ratio <= 0.82) {
-    message_D_opacity = scrollEvent(eventInfo.message_D.opacity_in);
-    message_D_translate = scrollEvent(eventInfo.message_D.transform_in);
-  } else {
-    message_D_opacity = scrollEvent(eventInfo.message_D.opacity_out);
-    message_D_translate = scrollEvent(eventInfo.message_D.transform_out);
+
+  if (sceneInfo === 0) {
+    if (ratio <= 0.22) {
+      message_A_opacity = ScrollEvent(eventInfo.message_A.opacity_in, currentHeight, clientScrollY);
+      message_A_translate = ScrollEvent(eventInfo.message_A.transform_in, currentHeight, clientScrollY);
+    } else {
+      message_A_opacity = ScrollEvent(eventInfo.message_A.opacity_out, currentHeight, clientScrollY);
+      message_A_translate = ScrollEvent(eventInfo.message_A.transform_out, currentHeight, clientScrollY);
+    }
+    if (ratio <= 0.42) {
+      message_B_opacity = ScrollEvent(eventInfo.message_B.opacity_in, currentHeight, clientScrollY);
+      message_B_translate = ScrollEvent(eventInfo.message_B.transform_in, currentHeight, clientScrollY);
+    } else {
+      message_B_opacity = ScrollEvent(eventInfo.message_B.opacity_out, currentHeight, clientScrollY);
+      message_B_translate = ScrollEvent(eventInfo.message_B.transform_in, currentHeight, clientScrollY);
+    }
+    if (ratio <= 0.62) {
+      message_C_opacity = ScrollEvent(eventInfo.message_C.opacity_in, currentHeight, clientScrollY);
+      message_C_translate = ScrollEvent(eventInfo.message_C.transform_in, currentHeight, clientScrollY);
+    } else {
+      message_C_opacity = ScrollEvent(eventInfo.message_C.opacity_out, currentHeight, clientScrollY);
+      message_C_translate = ScrollEvent(eventInfo.message_C.transform_out, currentHeight, clientScrollY);
+    }
+    if (ratio <= 0.82) {
+      message_D_opacity = ScrollEvent(eventInfo.message_D.opacity_in, currentHeight, clientScrollY);
+      message_D_translate = ScrollEvent(eventInfo.message_D.transform_in, currentHeight, clientScrollY);
+    } else {
+      message_D_opacity = ScrollEvent(eventInfo.message_D.opacity_out, currentHeight, clientScrollY);
+      message_D_translate = ScrollEvent(eventInfo.message_D.transform_out, currentHeight, clientScrollY);
+    }
   }
 
   useEffect(() => {
