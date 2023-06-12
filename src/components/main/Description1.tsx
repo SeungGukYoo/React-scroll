@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-
-import { DescriptionProps, EventInfo } from "../../../types/component";
+import { DescriptionProps, EventInfo, ScrollEventInfo } from "../../../types/component";
 
 import { useSharedValuesContext } from "../../context";
 import ScrollEvent from "../../util/scrollUtil";
@@ -151,13 +150,26 @@ const eventInfo: InfoType = {
     ],
   },
 };
+type videosType = {
+  videoImageCount: number;
+  imageSequence: number[];
+  canvas_opacity: ScrollEventInfo;
+};
 
+const videos: videosType = {
+  videoImageCount: 300,
+  imageSequence: [0, 299],
+  canvas_opacity: [1, 0, { start: 0.9, end: 1 }],
+};
 const Description1 = ({ setClientHeight }: DescriptionProps) => {
   const [currentHeight, setCurEentHeigth] = useState(0);
   const { state } = useSharedValuesContext();
   const [ratio, setRatio] = useState(0);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   let scrollValue = useRef(0);
+  const video = useRef<HTMLImageElement[]>([]);
+
   let message_A_opacity = 0;
   let message_A_translate = 0;
   let message_B_opacity = 0;
@@ -166,9 +178,19 @@ const Description1 = ({ setClientHeight }: DescriptionProps) => {
   let message_C_translate = 0;
   let message_D_opacity = 0;
   let message_D_translate = 0;
-
+  let canvas_opacity = 0;
+  let index = useRef(0);
   if (state.sceneInfo === 0) {
     scrollValue.current = state.scrollValue - state.prevHeight;
+    let sequence = Math.round(ScrollEvent(videos.imageSequence, scrollValue.current, currentHeight));
+
+    if (video.current[sequence]) {
+      canvasRef.current?.getContext("2d")?.drawImage(video.current[sequence], 0, 0);
+    } else {
+      canvasRef.current?.getContext("2d")?.drawImage(video.current[video.current.length - 1], 0, 0);
+    }
+    canvas_opacity = ScrollEvent(videos.canvas_opacity, currentHeight, scrollValue.current);
+
     if (ratio <= 0.22) {
       message_A_opacity = ScrollEvent(eventInfo.message_A.opacity_in, currentHeight, scrollValue.current);
       message_A_translate = ScrollEvent(eventInfo.message_A.transform_in!, currentHeight, scrollValue.current);
@@ -200,6 +222,24 @@ const Description1 = ({ setClientHeight }: DescriptionProps) => {
   }
 
   useEffect(() => {
+    for (index.current = 0; index.current <= 299; index.current++) {
+      let img = new Image();
+      img.src = `${process.env.PUBLIC_URL}/images/IMG_${6726 + index.current}.JPG`;
+      video.current.push(img);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (state.sceneInfo !== 0) return;
+
+    const canvas = canvasRef.current;
+
+    video.current[video.current.length - 1].onload = () => {
+      const context = canvas?.getContext("2d");
+      context?.drawImage(video.current[0], 0, 0);
+    };
+  }, [state.sceneInfo]);
+  useEffect(() => {
     if (state.sceneInfo !== 0) return;
     setRatio((pre) => {
       let result = scrollValue.current / currentHeight;
@@ -217,17 +257,25 @@ const Description1 = ({ setClientHeight }: DescriptionProps) => {
       return newArr;
     });
   }, [currentHeight, setClientHeight]);
-
   return (
     <SceneContainer heightNum={5} currentHeight={(height) => setCurEentHeigth(height)}>
       <h1 className="relative -top-[10vh] text-[4rem] lg:text-[8vw]  font-medium flex items-center justify-center">
         iPhone 13 Pro
       </h1>
+      <div className="fixed w-full h-full -z-10 top-0 ">
+        <canvas
+          ref={canvasRef}
+          className="absolute top-0 left-0"
+          width="1920"
+          height="1080"
+          style={{ opacity: `${canvas_opacity}` }}
+        ></canvas>
+      </div>
       <div
-        className="sticky-elem main-message left-0 leading-snug w-full  sm:text-[4rem] lg:text-[8vw] "
+        className="sticky-elem main-message left-0 leading-snug w-full  sm:text-[4rem] lg:text-[8vw]"
         style={{ opacity: `${message_A_opacity}`, transform: `translate3d(0,${message_A_translate}%,0)` }}
       >
-        <p className="w-fulltext-center">프로 그 이상</p>
+        <p className="w-full text-center">프로 그 이상</p>
       </div>
       <div
         className="sticky-elem main-message left-0 leading-snug w-full   sm:text-[4rem] lg:text-[8vw] "
