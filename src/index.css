@@ -7,7 +7,7 @@
     @apply text-14 font-NotoSansKR;
   }
   .sticky-elem {
-    @apply opacity-0 fixed left-0 w-full;
+    @apply opacity-0 fixed left-0 w-full z-10;
   }
   .main-message {
     @apply top-[35vh] h-[3em] text-[2.2rem] flex justify-center items-center;
