@@ -20,14 +20,14 @@ const Description4 = ({ setClientHeight }: DescriptionProps) => {
       alignItems="center"
       currentHeight={(height) => setCurEentHeigth(height)}
     >
-      <p className="max-w-[1024px] text-[2rem] text-gray-400 mx-auto">
+      <p className="max-w-[1024px] text-[2rem]  lg:text-[3rem] text-gray-400 mx-auto">
         <strong className="text-black">A16 Bionic 칩</strong>
         <br />
         사진속 모든 것이 가장 아름답게
         <br />
         보이도록 해줍니다.
       </p>
-      <p className="max-w-[1024px] text-[1.2rem] text-gray-400 px-1 mx-auto ">
+      <p className="max-w-[1024px] text-[1.2rem] lg:text-[2rem]  text-gray-400 px-1 mx-auto ">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, quis architecto. Doloribus sit officia maiores
         quo ad magni dignissimos inventore, placeat hic. Eos ducimus assumenda id sed, tempore provident nemo accusamus
         similique eius quisquam maiores totam aspernatur blanditiis fugit laudantium delectus nisi. Perferendis eum
