@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { DescriptionProps, EventInfo } from "../../../types/component";
+
+import { useSharedValuesContext } from "../../context";
 import ScrollEvent from "../../util/scrollUtil";
 import SceneContainer from "./SceneContainer";
 
@@ -150,48 +152,63 @@ const eventInfo: InfoType = {
   },
 };
 
-const Description1 = ({ sceneInfo, clientScrollY, setClientHeight, ratio }: DescriptionProps) => {
+const Description1 = ({ setClientHeight }: DescriptionProps) => {
   const [currentHeight, setCurEentHeigth] = useState(0);
+  const { state } = useSharedValuesContext();
+  const [ratio, setRatio] = useState(0);
 
-  let message_A_opacity;
-  let message_A_translate;
-  let message_B_opacity;
-  let message_B_translate;
-  let message_C_opacity;
-  let message_C_translate;
-  let message_D_opacity;
-  let message_D_translate;
+  let scrollValue = useRef(0);
+  let message_A_opacity = 0;
+  let message_A_translate = 0;
+  let message_B_opacity = 0;
+  let message_B_translate = 0;
+  let message_C_opacity = 0;
+  let message_C_translate = 0;
+  let message_D_opacity = 0;
+  let message_D_translate = 0;
 
-  if (sceneInfo === 0) {
+  if (state.sceneInfo === 0) {
+    scrollValue.current = state.scrollValue - state.prevHeight;
     if (ratio <= 0.22) {
-      message_A_opacity = ScrollEvent(eventInfo.message_A.opacity_in, currentHeight, clientScrollY);
-      message_A_translate = ScrollEvent(eventInfo.message_A.transform_in, currentHeight, clientScrollY);
+      message_A_opacity = ScrollEvent(eventInfo.message_A.opacity_in, currentHeight, scrollValue.current);
+      message_A_translate = ScrollEvent(eventInfo.message_A.transform_in!, currentHeight, scrollValue.current);
     } else {
-      message_A_opacity = ScrollEvent(eventInfo.message_A.opacity_out, currentHeight, clientScrollY);
-      message_A_translate = ScrollEvent(eventInfo.message_A.transform_out, currentHeight, clientScrollY);
+      message_A_opacity = ScrollEvent(eventInfo.message_A.opacity_out, currentHeight, scrollValue.current);
+      message_A_translate = ScrollEvent(eventInfo.message_A.transform_out!, currentHeight, scrollValue.current);
     }
     if (ratio <= 0.42) {
-      message_B_opacity = ScrollEvent(eventInfo.message_B.opacity_in, currentHeight, clientScrollY);
-      message_B_translate = ScrollEvent(eventInfo.message_B.transform_in, currentHeight, clientScrollY);
+      message_B_opacity = ScrollEvent(eventInfo.message_B.opacity_in, currentHeight, scrollValue.current);
+      message_B_translate = ScrollEvent(eventInfo.message_B.transform_in!, currentHeight, scrollValue.current);
     } else {
-      message_B_opacity = ScrollEvent(eventInfo.message_B.opacity_out, currentHeight, clientScrollY);
-      message_B_translate = ScrollEvent(eventInfo.message_B.transform_in, currentHeight, clientScrollY);
+      message_B_opacity = ScrollEvent(eventInfo.message_B.opacity_out, currentHeight, scrollValue.current);
+      message_B_translate = ScrollEvent(eventInfo.message_B.transform_in!, currentHeight, scrollValue.current);
     }
     if (ratio <= 0.62) {
-      message_C_opacity = ScrollEvent(eventInfo.message_C.opacity_in, currentHeight, clientScrollY);
-      message_C_translate = ScrollEvent(eventInfo.message_C.transform_in, currentHeight, clientScrollY);
+      message_C_opacity = ScrollEvent(eventInfo.message_C.opacity_in, currentHeight, scrollValue.current);
+      message_C_translate = ScrollEvent(eventInfo.message_C.transform_in!, currentHeight, scrollValue.current);
     } else {
-      message_C_opacity = ScrollEvent(eventInfo.message_C.opacity_out, currentHeight, clientScrollY);
-      message_C_translate = ScrollEvent(eventInfo.message_C.transform_out, currentHeight, clientScrollY);
+      message_C_opacity = ScrollEvent(eventInfo.message_C.opacity_out, currentHeight, scrollValue.current);
+      message_C_translate = ScrollEvent(eventInfo.message_C.transform_out!, currentHeight, scrollValue.current);
     }
     if (ratio <= 0.82) {
-      message_D_opacity = ScrollEvent(eventInfo.message_D.opacity_in, currentHeight, clientScrollY);
-      message_D_translate = ScrollEvent(eventInfo.message_D.transform_in, currentHeight, clientScrollY);
+      message_D_opacity = ScrollEvent(eventInfo.message_D.opacity_in, currentHeight, scrollValue.current);
+      message_D_translate = ScrollEvent(eventInfo.message_D.transform_in!, currentHeight, scrollValue.current);
     } else {
-      message_D_opacity = ScrollEvent(eventInfo.message_D.opacity_out, currentHeight, clientScrollY);
-      message_D_translate = ScrollEvent(eventInfo.message_D.transform_out, currentHeight, clientScrollY);
+      message_D_opacity = ScrollEvent(eventInfo.message_D.opacity_out, currentHeight, scrollValue.current);
+      message_D_translate = ScrollEvent(eventInfo.message_D.transform_out!, currentHeight, scrollValue.current);
     }
   }
+
+  useEffect(() => {
+    if (state.sceneInfo !== 0) return;
+    setRatio((pre) => {
+      let result = scrollValue.current / currentHeight;
+      if (result < 0) result = 0;
+      else if (result > 1) result = 1;
+      pre = result;
+      return pre;
+    });
+  }, [currentHeight, state.prevHeight, state.sceneInfo, state.scrollValue]);
 
   useEffect(() => {
     setClientHeight((pre: number[]) => {
@@ -200,19 +217,20 @@ const Description1 = ({ sceneInfo, clientScrollY, setClientHeight, ratio }: Desc
       return newArr;
     });
   }, [currentHeight, setClientHeight]);
+
   return (
     <SceneContainer heightNum={5} currentHeight={(height) => setCurEentHeigth(height)}>
-      <h1 className="relative text-[4rem] -top-[10vh] lg:text-[9vw] font-medium flex items-center justify-center">
+      <h1 className="relative -top-[10vh] text-[4rem] lg:text-[8vw]  font-medium flex items-center justify-center">
         iPhone 13 Pro
       </h1>
       <div
-        className="sticky-elem main-message left-0 leading-snug w-full"
+        className="sticky-elem main-message left-0 leading-snug w-full  sm:text-[4rem] lg:text-[8vw] "
         style={{ opacity: `${message_A_opacity}`, transform: `translate3d(0,${message_A_translate}%,0)` }}
       >
         <p className="w-fulltext-center">프로 그 이상</p>
       </div>
       <div
-        className="sticky-elem main-message left-0 leading-snug w-full"
+        className="sticky-elem main-message left-0 leading-snug w-full   sm:text-[4rem] lg:text-[8vw] "
         style={{ opacity: `${message_B_opacity}`, transform: `translate3d(0,${message_B_translate}%,0)` }}
       >
         <p className="w-fulltext-center">
@@ -221,7 +239,7 @@ const Description1 = ({ sceneInfo, clientScrollY, setClientHeight, ratio }: Desc
         </p>
       </div>
       <div
-        className="sticky-elem main-message w-full left-0 leading-snug"
+        className="sticky-elem main-message w-full left-0 leading-snug   sm:text-[4rem] lg:text-[8vw] "
         style={{ opacity: `${message_C_opacity}`, transform: `translate3d(0,${message_C_translate}%,0)` }}
       >
         <p className="w-full text-center">
@@ -230,7 +248,7 @@ const Description1 = ({ sceneInfo, clientScrollY, setClientHeight, ratio }: Desc
         </p>
       </div>
       <div
-        className="sticky-elem main-message left-0 leading-snug"
+        className="sticky-elem main-message left-0 leading-snug   sm:text-[4rem] lg:text-[8vw] "
         style={{ opacity: `${message_D_opacity}`, transform: `translate3d(0,${message_D_translate}%,0)` }}
       >
         <p className="w-full text-center">

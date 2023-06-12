@@ -2,7 +2,7 @@ import React, { SetStateAction, useEffect, useState } from "react";
 import { DescriptionProps } from "../../../types/component";
 import SceneContainer from "./SceneContainer";
 
-const Description2 = ({ sceneInfo, ratio, clientScrollY, setClientHeight }: DescriptionProps) => {
+const Description2 = ({ setClientHeight }: DescriptionProps) => {
   const [currentHeight, setCurEentHeigth] = useState(0);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ const Description2 = ({ sceneInfo, ratio, clientScrollY, setClientHeight }: Desc
       newArr[1] = currentHeight;
       return newArr;
     });
-  }, [currentHeight]);
+  }, [currentHeight, setClientHeight]);
   return (
     <SceneContainer heightNum={1} currentHeight={(height) => setCurEentHeigth(height)}>
       <p className="max-w-[1024px] mx-auto text-[1.2rem] text-center text-[#888]">

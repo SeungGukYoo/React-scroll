@@ -1,8 +1,8 @@
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DescriptionProps } from "../../../types/component";
 import SceneContainer from "./SceneContainer";
 
-const Description4 = ({ ratio, sceneInfo, setClientHeight, clientScrollY }: DescriptionProps) => {
+const Description4 = ({ setClientHeight }: DescriptionProps) => {
   const [curentHeight, setCurEentHeigth] = useState(0);
   useEffect(() => {
     setClientHeight((pre: number[]) => {
@@ -10,7 +10,7 @@ const Description4 = ({ ratio, sceneInfo, setClientHeight, clientScrollY }: Desc
       newArr[3] = curentHeight;
       return newArr;
     });
-  }, [curentHeight]);
+  }, [curentHeight, setClientHeight]);
 
   return (
     <SceneContainer
