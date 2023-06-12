@@ -1,4 +1,5 @@
 export type ScrollEventInfo = [number, number, { start: number; end: number }];
+export type ScrollEventInfo2 = number[];
 
 export interface DescriptionProps {
   setClientHeight: React.Dispatch<SetStateAction<number[]>>;
